@@ -17,7 +17,7 @@ int main()
     // grid.grid[2][6] = 6;
     // grid.grid[3][5] = 4;
 
-    lBlock block = lBlock();
+    TBlock block = TBlock();
 
     grid.Print(); // call the print function
 
