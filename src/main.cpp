@@ -1,33 +1,52 @@
 #include <raylib.h>
-#include "grid.h"
-#include "blocks.cpp"
+#include "game.h"
+#include "colors.h"
+#include <iostream>
+
+double lastUpdateTime = 0;
+
+bool EventTriggered(double interval)
+{
+    if (GetTime() - lastUpdateTime > interval)
+    {
+        lastUpdateTime = GetTime();
+        return true;
+    }
+    return false;
+}
+
 int main()
 {
-    // Colors are defined as structs with RGB values{ R, G, B, A }
-    Color darkBlue = {44, 44, 127, 255};
-
-    InitWindow(300, 600, "Tetris"); // Initialization
+    InitWindow(500, 620, "Tetris"); // Initialization
     SetTargetFPS(60);               // Set target FPS to 60
-
-    Grid grid = Grid(); //   create a grid object
-
-    // hardcoded tests
-    // grid.grid[0][0] = 1;
-    // grid.grid[4][4] = 5;
-    // grid.grid[2][6] = 6;
-    // grid.grid[3][5] = 4;
-
-    TBlock block = TBlock();
-
-    grid.Print(); // call the print function
-
+    Font font = LoadFontEx("Font/monogram.ttf", 64, 0, 0);
+    Game game = Game();
     while (WindowShouldClose() == false) // Detect window close button or ESC key
     {
+        game.HandleInput();
+        if (EventTriggered(0.2))
+        {
+            game.MoveBlockDown();
+        }
         BeginDrawing();            // Starts the canvas
         ClearBackground(darkBlue); // Clears the canvas with a color
-        grid.Draw();               // call the draw function
-        block.Draw();
-        EndDrawing();              // Ends the canvas
+        DrawTextEx(font, "Score", {365, 15}, 38, 2, WHITE);
+        DrawTextEx(font, "Next", {370, 175}, 38, 2, WHITE);
+        if (game.gameOver)
+        {
+            DrawTextEx(font, "GAME OVER", {320, 450}, 38, 2, WHITE);
+        }
+        DrawRectangleRounded({320, 55, 170, 60}, 0.3, 6, lightBlue);
+
+        char scoreText[10];
+        sprintf(scoreText, "%d", game.score);
+        Vector2 textSize = MeasureTextEx(font, scoreText, 38, 2);
+
+
+        DrawTextEx(font, scoreText, {320+(170-textSize.x)/2, 65}, 38, 2, WHITE);
+        DrawRectangleRounded({320, 220, 170, 180}, 0.3, 6, lightBlue);
+        game.Draw();
+        EndDrawing(); // Ends the canvas
     }
     CloseWindow(); // Close window
 

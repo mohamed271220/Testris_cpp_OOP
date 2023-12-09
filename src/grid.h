@@ -6,17 +6,21 @@ class Grid
 {
 public:
     Grid();
+    int grid[20][10];
     void Initialize();
     void Print();
     void Draw();
-    int grid[20][10];
-    // adding a vector to hold the colors
-    // a vector is a dynamic array that can grow and shrink
-
+    bool IsCellOutside(int row, int column);
+    bool IsCellEmpty(int row, int column);
+    int ClearFullRows();
+ 
 
 private:
     int numRows;
     int numCols;
     int cellSize;
+    bool IsRowFull(int row);
+    void ClearRow(int row);
+    void MoveRowDown(int row, int numRows);
     std::vector<Color> colors;
 };

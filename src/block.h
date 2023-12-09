@@ -8,8 +8,13 @@ class Block
 {
 public:
     Block();
+    void Draw(int offsetX, int offsetY);
     int id;
-    void Draw();
+    
+    void Move(int rows, int columns);
+    std::vector<Position> GetCellPositions();
+    void Rotate();
+    void UndoRotation();
     // map : key-value pairs in a sorted order based on the keys.
     // vector:  stores a dynamic array of elements
     std::map<int, std::vector<Position>> cells;
@@ -18,4 +23,6 @@ private:
     int cellSize;
     int rotationState;
     std::vector<Color> colors;
+    int rowOffset;
+    int columnOffset;
 };
